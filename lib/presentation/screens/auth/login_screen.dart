@@ -29,8 +29,8 @@ class _LoginPageState extends State<LoginPage> {
             GestureDetector(
               onTap: () => Get.to(null),
               child: Text(
-                'RentRover',
-                style: GoogleFonts.pacifico(
+                'YAP',
+                style: GoogleFonts.lexend(
                   fontSize: 40,
                   color: Colors.black,
                 ),
