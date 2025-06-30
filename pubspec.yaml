@@ -69,6 +69,12 @@ dependencies:
   google_maps_flutter: ^2.12.3
   geolocator: ^14.0.1
   razorpay_flutter: ^1.4.0
+  path_provider: ^2.1.5
+  animated_text_kit: ^4.2.3
+  flutter_chat_ui: ^2.6.0
+  flutter_chat_types: ^3.6.2
+  uuid: ^4.5.1
+  rxdart: ^0.28.0
 
 
 

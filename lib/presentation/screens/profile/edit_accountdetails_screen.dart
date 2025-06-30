@@ -2,29 +2,31 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../../controllers/editaccount_controller.dart';
+import '../../../app/controllers/editaccount_controller.dart';
+
 
 class EditAccountPage extends StatelessWidget {
-  final accountController = Get.put(EditAccountController());
+  final EditAccountController accountController = Get.put(EditAccountController());
 
-EditAccountPage({super.key});
+  EditAccountPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 1,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         leading: IconButton(
-          icon: const Icon(CupertinoIcons.back, color: Colors.black),
+          icon: Icon(CupertinoIcons.back, color: Theme.of(context).colorScheme.onBackground),
           onPressed: () => Get.back(result: true),
         ),
         title: Text(
           'Edit Account',
-          style: GoogleFonts.playfairDisplay(
+          style: GoogleFonts.poppins(
             fontSize: 22,
-            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            color: Theme.of(context).colorScheme.onBackground,
           ),
         ),
         centerTitle: true,
@@ -40,6 +42,7 @@ EditAccountPage({super.key});
                 onTap: accountController.pickImage,
                 child: CircleAvatar(
                   radius: Get.width * 0.22,
+                  backgroundColor: Theme.of(context).colorScheme.surface,
                   backgroundImage: accountController.selectedImage.value != null
                       ? FileImage(accountController.selectedImage.value!)
                       : accountController.userController.profileImageUrl.value.isNotEmpty
@@ -51,34 +54,26 @@ EditAccountPage({super.key});
               buildTextField(
                 label: 'Name',
                 controller: accountController.nameController,
+                context: context,
               ),
               const SizedBox(height: 20),
               buildTextField(
                 label: 'Email',
                 controller: accountController.emailController,
+                context: context,
               ),
               const SizedBox(height: 30),
               SizedBox(
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.deepPurpleAccent,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  onPressed: accountController.isLoading.value
-                      ? null
-                      : accountController.saveChanges,
+                  onPressed: accountController.isLoading.value ? null : accountController.saveChanges,
                   child: accountController.isLoading.value
-                      ? const CircularProgressIndicator(
-                      color: Colors.white, strokeWidth: 2.5)
+                      ? const CircularProgressIndicator(color: Colors.white, strokeWidth: 2.5)
                       : Text(
                     'Save Changes',
                     style: GoogleFonts.barlow(
                       fontSize: 16,
-                      color: Colors.white,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -94,24 +89,25 @@ EditAccountPage({super.key});
   Widget buildTextField({
     required String label,
     required TextEditingController controller,
+    required BuildContext context,
   }) {
     return TextField(
       controller: controller,
       style: GoogleFonts.barlow(
-        color: Colors.black,
+        color: Theme.of(context).colorScheme.onBackground,
         fontSize: 16,
       ),
       decoration: InputDecoration(
         labelText: label,
         labelStyle: GoogleFonts.barlow(
-          color: Colors.grey[700],
+          color: Theme.of(context).colorScheme.onBackground.withOpacity(0.7),
           fontSize: 15,
         ),
-        enabledBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.grey),
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Colors.grey.withOpacity(0.5)),
         ),
-        focusedBorder: const UnderlineInputBorder(
-          borderSide: BorderSide(color: Colors.deepPurpleAccent),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Theme.of(context).colorScheme.primary, width: 2),
         ),
       ),
     );

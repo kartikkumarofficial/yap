@@ -4,86 +4,81 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:yap/presentation/screens/auth/login_screen.dart';
 import 'package:yap/presentation/screens/auth/signup_screen.dart';
 
-class OnboardingScreen extends StatefulWidget {
+import 'main_scaffold.dart';
+
+class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({Key? key}) : super(key: key);
 
   @override
-  State<OnboardingScreen> createState() => _OnboardingScreenState();
-}
-
-class _OnboardingScreenState extends State<OnboardingScreen> {
-  int selectedToggle = 0;
-
-  @override
   Widget build(BuildContext context) {
-    final double screenHeight = MediaQuery.of(context).size.height;
-    final double screenWidth = MediaQuery.of(context).size.width;
-
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F5F0),
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [
-
           Positioned.fill(
             child: Image.asset(
               'assets/onboarding.png',
               fit: BoxFit.cover,
             ),
           ),
-          // This is the overlapping container at the bottom
           Positioned(
             bottom: 0,
             left: 0,
             right: 0,
             child: Container(
-              width: screenWidth,
-              // Removed the fixed height here
               padding: const EdgeInsets.fromLTRB(24, 28, 24, 24),
-              decoration: const BoxDecoration(
-                color: Color(0XFFFEF3DC),
-                borderRadius: BorderRadius.only(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.background,
+                borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(36),
                   topRight: Radius.circular(36),
                 ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    blurRadius: 20,
+                    offset: const Offset(0, -5),
+                  ),
+                ],
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                // mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    // textAlign: TextAlign.center,
                     "Welcome to Yap!",
-                    style: TextStyle(
+                    style: GoogleFonts.poppins(
                       fontSize: 25,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black87,
+                      color: Theme.of(context).colorScheme.onBackground,
                     ),
                   ),
                   const SizedBox(height: 5),
-                  const Text(
+                  Text(
                     "Connect to people you care about.",
-                    style: TextStyle(
+                    style: GoogleFonts.barlow(
                       fontSize: 15,
-                      color: Colors.black54,
+                      color: Theme.of(context).colorScheme.onBackground.withOpacity(0.7),
                     ),
                   ),
-
                   const SizedBox(height: 20),
                   Row(
                     children: [
                       Expanded(
-                        child: outlinedButton("Create Account", () {
-                          Get.to(SignUpPage());
-                        }),
+                        child: outlinedButton(
+                          "Create Account",
+                              () => Get.offAll(() => const SignUpPage()),
+                          context,
+                        ),
                       ),
                       const SizedBox(width: 12),
                       Expanded(
-                        child: outlinedButton("Sign In", () {
-
-                          Get.to(const LoginPage());
-                        }),
+                        child: outlinedButton(
+                          "Sign In",
+                              () => Get.offAll(() => const LoginPage()),
+                          context,
+                        ),
                       ),
                     ],
                   ),
@@ -92,18 +87,19 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
-                        Get.to(const LoginPage());
+
+                        Get.offAll(() => MainScaffold());
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF2D9CDB),
+                        backgroundColor: Theme.of(context).colorScheme.primary,
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
                       ),
-                      child: const Text(
+                      child: Text(
                         "Continue as Guest",
-                        style: TextStyle(fontSize: 18, color: Colors.white),
+                        style: GoogleFonts.barlow(fontSize: 18, color: Colors.white),
                       ),
                     ),
                   ),
@@ -116,46 +112,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
-  Widget toggleButton(String text, int index) {
-    final isSelected = selectedToggle == index;
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          selectedToggle = index;
-        });
-      },
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        decoration: BoxDecoration(
-          color: isSelected ? Colors.black : Colors.grey[300],
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Text(
-          text,
-          style: TextStyle(
-            color: isSelected ? Colors.white : Colors.black87,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget outlinedButton(String text, VoidCallback onTap) {
+  Widget outlinedButton(String text, VoidCallback onTap, BuildContext context) {
     return OutlinedButton(
       onPressed: onTap,
       style: OutlinedButton.styleFrom(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.background,
         padding: const EdgeInsets.symmetric(vertical: 14),
-        side: const BorderSide(color: Colors.black87, width: 1.5),
+        side: BorderSide(color: Theme.of(context).colorScheme.onBackground, width: 1.5),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
         ),
       ),
       child: Text(
         text,
-        style: const TextStyle(
-          color: Colors.black87,
+        style: GoogleFonts.barlow(
+          color: Theme.of(context).colorScheme.onBackground,
           fontWeight: FontWeight.w600,
         ),
       ),

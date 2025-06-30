@@ -3,8 +3,7 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 
-import '../../utils/constants.dart';
-
+import '../../app/utils/secrets.dart';
 
 class CloudinaryService {
   static const _cloudName = Secrets.cloudName;

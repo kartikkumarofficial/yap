@@ -1,10 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../presentation/screens/auth/login_screen.dart';
+import '../../presentation/screens/auth/login_screen.dart';
+
 
 class UserController extends GetxController {
   final supabase = Supabase.instance.client;
@@ -18,18 +17,12 @@ class UserController extends GetxController {
     try {
       isLoading.value = true;
       final user = supabase.auth.currentUser;
-
       if (user != null) {
-
         print('Logged-in User ID: ${user.id}');
-
         email.value = user.email ?? '';
-
         final response =
         await supabase.from('users').select().eq('id', user.id).single();
-
         print('User table response: $response');
-
         userName.value = response['username'] ?? 'username not provided';
         profileImageUrl.value =
             response['profile_image'] ??
@@ -37,12 +30,11 @@ class UserController extends GetxController {
       }
     } catch (e) {
       print('Fetch user profile error: $e');
-      Get.snackbar('Error', 'Failed to fetch user profile',colorText: Colors.white,);
+      Get.snackbar('Error', 'Failed to fetch user profile :${e.toString()}',colorText: Colors.white,);
     } finally {
       isLoading.value = false;
     }
   }
-
 
   Future<void> updateProfileImage(String url) async {
     try {
@@ -78,7 +70,7 @@ class UserController extends GetxController {
     try {
       await supabase.auth.signOut();
       clearUserData();
-      Get.offAll(LoginPage());
+      Get.offAll(() => LoginPage());
     } catch (e) {
       Get.snackbar('Error', 'Failed to logout',colorText: Colors.white,);
     }

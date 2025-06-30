@@ -2,10 +2,11 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:yap/controllers/user_controller.dart';
 
-import '../data/services/cloudinary_service.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:yap/app/controllers/user_controller.dart';
+
+import '../services/cloudinary_service.dart';
 
 class EditAccountController extends GetxController {
   final nameController = TextEditingController();

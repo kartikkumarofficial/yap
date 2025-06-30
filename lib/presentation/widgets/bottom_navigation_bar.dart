@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-
-import '../../controllers/nav_controller.dart';
+import 'package:get/get.dart';
+import '../../app/controllers/nav_controller.dart';
+// import '../../controllers/nav_controller.dart';
 
 class BottomNavBar extends StatelessWidget {
   const BottomNavBar({
@@ -12,35 +13,35 @@ class BottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      backgroundColor: Colors.white,
+    return Obx(() => BottomNavigationBar(
+      backgroundColor: Theme.of(context).bottomNavigationBarTheme.backgroundColor,
       currentIndex: navController.selectedIndex.value,
       onTap: navController.changeTab,
       type: BottomNavigationBarType.fixed,
-      selectedItemColor: Colors.deepPurple,
-      unselectedItemColor: Colors.grey[800],
+      selectedItemColor: Theme.of(context).bottomNavigationBarTheme.selectedItemColor,
+      unselectedItemColor: Theme.of(context).bottomNavigationBarTheme.unselectedItemColor,
       selectedFontSize: 14,
       unselectedFontSize: 12,
       iconSize: 28,
-      elevation: 4, // Slight elevation for subtle shadow
+      elevation: 4,
       items: const [
         BottomNavigationBarItem(
-          icon: Icon(Icons.bar_chart),
+          icon: Icon(Icons.home_filled),
           label: 'Home',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.chat),
+          label: 'Chats',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.calendar_today),
           label: 'Bookings',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.map),
-          label: 'Map',
-        ),
-        BottomNavigationBarItem(
           icon: Icon(Icons.person),
           label: 'Profile',
         ),
       ],
-    );
+    ));
   }
 }

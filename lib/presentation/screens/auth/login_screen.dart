@@ -1,79 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-
-import '../../../controllers/auth_controller.dart';
+import '../../../app/controllers/auth_controller.dart';
 import '../../widgets/social_login_button.dart';
+import '../main_scaffold.dart';
 import 'signup_screen.dart';
+import '../../widgets/text_field_box.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
-  final AuthController authController = Get.find();
-
-  @override
   Widget build(BuildContext context) {
+    final AuthController authController = Get.find();
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             GestureDetector(
-              onTap: () => Get.to(null),
+              onTap: () => Get.to(() => MainScaffold()),
               child: Text(
                 'YAP',
                 style: GoogleFonts.lexend(
                   fontSize: 40,
-                  color: Colors.black,
+                  color: Theme.of(context).colorScheme.onBackground,
                 ),
               ),
             ),
             const SizedBox(height: 40),
-            TextField(
+            TextFieldBox(
               controller: authController.emailController,
-              keyboardType: TextInputType.emailAddress,
-              style: const TextStyle(color: Colors.black),
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.grey[100],
-                prefixIcon: const Icon(Icons.email, color: Colors.black),
-                hintText: 'Email',
-                hintStyle: const TextStyle(color: Colors.grey),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
+              hint: 'Email',
+              icon: Icons.email,
             ),
             const SizedBox(height: 20),
-            TextFormField(
+            TextFieldBox(
               controller: authController.passwordController,
-              obscureText: true,
-              style: const TextStyle(color: Colors.black),
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.grey[100],
-                prefixIcon: const Icon(Icons.lock, color: Colors.black),
-                hintText: 'Password',
-                hintStyle: const TextStyle(color: Colors.grey),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
+              hint: 'Password',
+              icon: Icons.lock,
+              isObscure: true,
             ),
             const SizedBox(height: 10),
             Align(
               alignment: Alignment.centerRight,
               child: Text(
                 'Forgot Password?',
-                style: TextStyle(color: Colors.grey[700]),
+                style: TextStyle(color: Theme.of(context).colorScheme.onBackground.withOpacity(0.7)),
               ),
             ),
             const SizedBox(height: 20),
@@ -81,15 +57,13 @@ class _LoginPageState extends State<LoginPage> {
               width: double.infinity,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
-                  foregroundColor: Colors.white,
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  foregroundColor: Theme.of(context).colorScheme.onPrimary,
                   padding: const EdgeInsets.symmetric(vertical: 15),
                 ),
                 onPressed: authController.isLoading.value
                     ? null
-                    : () {
-                  authController.logIn();
-                },
+                    : () => authController.logIn(),
                 child: authController.isLoading.value
                     ? const CircularProgressIndicator(color: Colors.white)
                     : const Text('Sign in'),
@@ -99,21 +73,16 @@ class _LoginPageState extends State<LoginPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(
+                Text(
                   "Don't have an account? ",
-                  style: TextStyle(color: Colors.black87),
+                  style: TextStyle(color: Theme.of(context).colorScheme.onBackground),
                 ),
                 GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => SignUpPage()),
-                    );
-                  },
-                  child: const Text(
+                  onTap: () => Get.offAll(() => const SignUpPage()),
+                  child: Text(
                     'Sign Up',
                     style: TextStyle(
-                      color: Colors.deepPurpleAccent,
+                      color: Theme.of(context).colorScheme.primary,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -121,9 +90,9 @@ class _LoginPageState extends State<LoginPage> {
               ],
             ),
             const SizedBox(height: 20),
-            const Text(
+            Text(
               'or sign in with',
-              style: TextStyle(color: Colors.black54),
+              style: TextStyle(color: Theme.of(context).colorScheme.onBackground.withOpacity(0.6)),
             ),
             const SizedBox(height: 15),
             Row(

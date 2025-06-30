@@ -1,34 +1,31 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:yap/presentation/screens/profile/profile_screen.dart';
-import '../../controllers/nav_controller.dart';
-import '../widgets/bottom_navigation_bar.dart';
 
+import 'package:yap/presentation/screens/profile/profile_screen.dart';
+import 'package:yap/presentation/screens/home/home_screen.dart';
+import 'package:yap/presentation/screens/chat/chat_list_screen.dart';
+import 'package:yap/presentation/widgets/bottom_navigation_bar.dart';
+
+import '../../app/controllers/nav_controller.dart';
 
 class MainScaffold extends StatelessWidget {
   MainScaffold({super.key});
 
-  final NavController navController = Get.put(NavController());
+  final NavController navController = Get.find();
 
   final List<Widget> screens = [
-
-
-    ProfileScreen(),
-    ProfileScreen(),
-    ProfileScreen(),
-    ProfileScreen(),
-
+    const HomeScreen(),
+    const ChatListScreen(),
+    const Placeholder(),
+    const ProfileScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Obx(() => Scaffold(
-      backgroundColor:   Color(0xFF121212),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: screens[navController.selectedIndex.value],
       bottomNavigationBar: BottomNavBar(navController: navController),
     ));
   }
 }
-
-

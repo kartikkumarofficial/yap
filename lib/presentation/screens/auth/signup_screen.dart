@@ -1,35 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../../app/controllers/auth_controller.dart';
 
-import '../../../controllers/auth_controller.dart';
 import '../../widgets/text_field_box.dart';
 
-
-class SignUpPage extends StatefulWidget {
+class SignUpPage extends StatelessWidget {
   const SignUpPage({super.key});
 
   @override
-  State<SignUpPage> createState() => _SignUpPageState();
-}
-
-class _SignUpPageState extends State<SignUpPage> {
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  final AuthController authController = Get.find();
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+    final AuthController authController = Get.find();
+
     return Scaffold(
-      backgroundColor: Colors.white, // Light theme background
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.transparent,
         elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.black),
+        iconTheme: IconThemeData(color: Theme.of(context).colorScheme.onBackground),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -38,13 +27,13 @@ class _SignUpPageState extends State<SignUpPage> {
             key: formKey,
             child: Column(
               children: [
-                SizedBox(height: Get.height * 0.1),
+                SizedBox(height: Get.height * 0.05),
                 Text(
                   'Create Account',
                   style: GoogleFonts.poppins(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black,
+                    color: Theme.of(context).colorScheme.onBackground,
                   ),
                 ),
                 const SizedBox(height: 30),
@@ -70,8 +59,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     if (value == null || value.trim().isEmpty) {
                       return 'Email is required';
                     }
-                    final emailRegex =
-                    RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+                    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
                     if (!emailRegex.hasMatch(value.trim())) {
                       return 'Enter a valid email';
                     }
@@ -102,8 +90,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
                       return 'Please confirm your password';
-                    } else if (value.trim() !=
-                        authController.passwordController.text.trim()) {
+                    } else if (value.trim() != authController.passwordController.text.trim()) {
                       return 'Passwords do not match';
                     }
                     return null;
@@ -114,8 +101,8 @@ class _SignUpPageState extends State<SignUpPage> {
                   width: double.infinity,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black,
-                      foregroundColor: Colors.white,
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
                       padding: const EdgeInsets.symmetric(vertical: 15),
                     ),
                     onPressed: authController.isLoading.value
@@ -127,9 +114,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       }
                     },
                     child: authController.isLoading.value
-                        ? const CircularProgressIndicator(
-                      color: Colors.white,
-                    )
+                        ? const CircularProgressIndicator(color: Colors.white)
                         : const Text('Sign Up'),
                   ),
                 )),
