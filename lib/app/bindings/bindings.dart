@@ -8,8 +8,8 @@ class InitialBinding extends Bindings {
   @override
   void dependencies() {
 
-    Get.put(AuthController(), permanent: true);
     Get.put(UserController(), permanent: true);
+    Get.put(AuthController(), permanent: true);
     Get.put(NavController(), permanent: true);
     Get.put(ThemeController(), permanent: true);
 }
