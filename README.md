@@ -51,32 +51,27 @@ You can replace the *Project Structure* section in the README with this:
 
 ---
 
-## 📁 Project Structure
+Sure—here’s a clean **project structure** section you can copy-paste directly into your README.md:
+
+---
+
+## 📂 Project Structure
 
 ```
 lib/
-├── app/                      # Core app logic
-│   ├── bindings/             # Dependency injections
-│   │   └── bindings.dart
-│   ├── controllers/          # All GetX controllers
-│   └── utils/                # Shared utilities
-│       ├── secrets.dart
-│
-├── presentation/             # UI screens & widgets
-│   ├── screens
-│   └── widgets               # Reusable UI components
-│       └── (your widgets here)
-│
-└── main.dart                 # App entry point
+├── app/
+│   ├── bindings/        # Dependency bindings for controllers and services
+│   ├── controllers/     # State management logic and controllers
+│   ├── data/            # Data sources (local, remote)
+│   ├── models/          # Model classes
+│   ├── services/        # API and service classes
+│   └── utils/           # Utility helpers and constants
+├── presentation/
+│   ├── routes/          # App routes and navigation
+│   ├── screens/         # UI screens
+│   └── widgets/         # Reusable UI components
+└── main.dart            # Entry point of the application
 ```
-
----
-
-✅ **Tip:** You can add more subfolders in `widgets` or `screens` as your app grows.
-
----
-
-Let me know if you’d like me to tweak anything further!
 
 ---
 
@@ -92,6 +87,7 @@ Messaging, user profiles, and real-time sync — all coming soon.
 * Supabase 🔐
 * GetX ⚡
 * Google Fonts 🔤
+* Cloudinary ☁
 
 ---
 
@@ -99,4 +95,3 @@ Messaging, user profiles, and real-time sync — all coming soon.
 
 Follow for updates, forks & collabs.
 
----
