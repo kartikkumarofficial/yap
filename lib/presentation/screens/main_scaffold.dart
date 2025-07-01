@@ -14,10 +14,10 @@ class MainScaffold extends StatelessWidget {
   final NavController navController = Get.find();
 
   final List<Widget> screens = [
-    const HomeScreen(),
-    const ChatListScreen(),
-    const Placeholder(),
-    const ProfileScreen(),
+     HomeScreen(),
+     ChatListScreen(),
+     Placeholder(),
+     ProfileScreen(),
   ];
 
   @override

@@ -46,15 +46,6 @@ Fast, smooth, and scalable — YAP helps users connect through seamless onboardi
 
 ---
 
-Absolutely! Here’s an **enhanced, more detailed folder structure** showing the next levels so it’s clear exactly where things live.
-You can replace the *Project Structure* section in the README with this:
-
----
-
-Sure—here’s a clean **project structure** section you can copy-paste directly into your README.md:
-
----
-
 ## 📂 Project Structure
 
 ```
