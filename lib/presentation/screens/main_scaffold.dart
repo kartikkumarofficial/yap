@@ -16,7 +16,6 @@ class MainScaffold extends StatelessWidget {
   final List<Widget> screens = [
      HomeScreen(),
      ChatListScreen(),
-     Placeholder(),
      ProfileScreen(),
   ];
 

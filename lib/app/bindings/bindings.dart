@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:yap/app/controllers/chat_controller.dart';
 import '../controllers/auth_controller.dart';
 import '../controllers/nav_controller.dart';
 import '../controllers/theme_controller.dart';
@@ -12,5 +13,6 @@ class InitialBinding extends Bindings {
     Get.put(AuthController(), permanent: true);
     Get.put(NavController(), permanent: true);
     Get.put(ThemeController(), permanent: true);
+    Get.put(ChatController(), permanent: true);
 }
 }
