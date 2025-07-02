@@ -42,7 +42,7 @@ class AuthController extends GetxController {
           'email': email,
           'username': name,
           'profile_image':
-          'https://api.dicebear.com/6.x/pixel-art/svg?seed=$email',
+          'https://api.dicebear.com/6.x/pixel-art/png?seed=work.kartikkumar@gmail.com',
         });
         await userController.fetchUserProfile();
         Get.snackbar(

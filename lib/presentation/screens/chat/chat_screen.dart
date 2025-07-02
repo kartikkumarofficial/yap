@@ -1,61 +1,64 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-
 import '../../../app/controllers/chat_controller.dart';
 
-class ChatScreen extends StatelessWidget {
+class ChatScreen extends StatefulWidget {
   final String chatId;
-  final ChatController controller = Get.put(ChatController());
 
-  ChatScreen({super.key, required this.chatId}) {
-    controller.init(chatId);
+  const ChatScreen({super.key, required this.chatId});
+
+  @override
+  State<ChatScreen> createState() => _ChatScreenState();
+}
+
+class _ChatScreenState extends State<ChatScreen> {
+  final ChatController chatController = Get.find<ChatController>();
+  final TextEditingController messageController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    chatController.fetchMessages(widget.chatId);
+    chatController.subscribeToMessages(widget.chatId);
   }
 
-  final TextEditingController textController = TextEditingController();
+  @override
+  void dispose() {
+    chatController.unsubscribeMessages();
+    messageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final currentUserId = chatController.supabase.auth.currentUser!.id;
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Chat",
-          style: GoogleFonts.poppins(),
-        ),
-      ),
+      appBar: AppBar(title: const Text('Chat')),
       body: Column(
         children: [
           Expanded(
             child: Obx(() {
-              if (controller.isLoading.value) {
-                return const Center(child: CircularProgressIndicator());
-              }
               return ListView.builder(
-                padding: const EdgeInsets.all(12),
-                itemCount: controller.messages.length,
+                padding: const EdgeInsets.all(8),
+                itemCount: chatController.messages.length,
                 itemBuilder: (context, index) {
-                  final msg = controller.messages[index];
-                  final isMine = msg['sender_id'] ==
-                      Supabase.instance.client.auth.currentUser?.id;
+                  final message = chatController.messages[index];
+                  final isMe = message['sender_id'] == currentUserId;
+
                   return Align(
-                    alignment: isMine
-                        ? Alignment.centerRight
-                        : Alignment.centerLeft,
+                    alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
                     child: Container(
                       margin: const EdgeInsets.symmetric(vertical: 4),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 8),
+                      padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: isMine
-                            ? Theme.of(context).colorScheme.primary
-                            : Colors.grey[300],
-                        borderRadius: BorderRadius.circular(12),
+                        color: isMe ? Colors.blueAccent : Colors.grey[300],
+                        borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(
-                        msg['content'],
-                        style: GoogleFonts.barlow(
-                          color: isMine ? Colors.white : Colors.black87,
+                        message['content'],
+                        style: TextStyle(
+                          color: isMe ? Colors.white : Colors.black87,
                         ),
                       ),
                     ),
@@ -64,39 +67,31 @@ class ChatScreen extends StatelessWidget {
               );
             }),
           ),
-          Container(
-            padding:
-            const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 4,
-                ),
-              ],
-            ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
             child: Row(
               children: [
                 Expanded(
                   child: TextField(
-                    controller: textController,
+                    controller: messageController,
                     decoration: const InputDecoration(
-                      hintText: 'Type a message...',
-                      border: InputBorder.none,
+                      hintText: 'Type your message...',
                     ),
                   ),
                 ),
                 IconButton(
                   icon: const Icon(Icons.send),
-                  onPressed: () async {
-                    await controller.sendMessage(textController.text);
-                    textController.clear();
+                  onPressed: () {
+                    final text = messageController.text.trim();
+                    if (text.isNotEmpty) {
+                      chatController.sendMessage(widget.chatId, text);
+                      messageController.clear();
+                    }
                   },
-                ),
+                )
               ],
             ),
-          ),
+          )
         ],
       ),
     );

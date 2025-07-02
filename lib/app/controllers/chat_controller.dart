@@ -4,67 +4,64 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class ChatController extends GetxController {
   final supabase = Supabase.instance.client;
 
-  var messages = [].obs;
-  var isLoading = false.obs;
+  RxList<Map<String, dynamic>> messages = <Map<String, dynamic>>[].obs;
 
-  String chatId = '';
+  RealtimeChannel? _messageChannel;
 
-  RealtimeChannel? _subscription;
-
-  void init(String chatId) {
-    this.chatId = chatId;
-    fetchMessages();
-    subscribeToMessages();
-  }
-
-  Future<void> fetchMessages() async {
+  // Fetch messages
+  Future<void> fetchMessages(String chatId) async {
     try {
-      isLoading.value = true;
       final response = await supabase
           .from('messages')
           .select()
           .eq('chat_id', chatId)
           .order('sent_at');
-
       messages.value = response;
     } catch (e) {
       Get.snackbar('Error', 'Failed to load messages: $e');
-    } finally {
-      isLoading.value = false;
     }
   }
 
-  void subscribeToMessages() {
-    _subscription = supabase
+  // Subscribe to real-time updates
+  void subscribeToMessages(String chatId) {
+    _messageChannel?.unsubscribe();
+
+    _messageChannel = supabase
         .channel('public:messages')
         .onPostgresChanges(
-      event: PostgresChangeEvent.insert,
-      schema: 'public',
+      event: PostgresChangeEvent.all,
       table: 'messages',
+      filter: PostgresChangeFilter(
+        type: PostgresChangeFilterType.eq,
+        column: 'chat_id',
+        value: chatId,
+      ),
       callback: (payload) {
-        messages.add(payload.newRecord);
+        fetchMessages(chatId);
       },
     )
-
         .subscribe();
   }
 
 
-  Future<void> sendMessage(String content) async {
-    final user = supabase.auth.currentUser;
-    if (user == null) return;
-    if (content.trim().isEmpty) return;
-
-    await supabase.from('messages').insert({
-      'chat_id': chatId,
-      'sender_id': user.id,
-      'content': content.trim(),
-    });
+  void unsubscribeMessages() {
+    _messageChannel?.unsubscribe();
+    _messageChannel = null;
   }
 
-  @override
-  void onClose() {
-    _subscription?.unsubscribe();
-    super.onClose();
+  // Send a message
+  Future<void> sendMessage(String chatId, String content) async {
+    final userId = supabase.auth.currentUser!.id;
+    try {
+      await supabase.from('messages').insert({
+        'chat_id': chatId,
+        'sender_id': userId,
+        'content': content,
+        'type': 'text',
+        'sent_at': DateTime.now().toIso8601String(),
+      });
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to send message: $e');
+    }
   }
 }
