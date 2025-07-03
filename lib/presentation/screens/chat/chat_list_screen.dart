@@ -3,8 +3,9 @@ import 'package:get/get.dart';
 import '../../../app/controllers/chat_list_controller.dart';
 import 'chat_screen.dart';
 
+
 class ChatListScreen extends StatelessWidget {
-  // Use ChatListController for chat listing
+
   final ChatListController chatListController = Get.put(ChatListController());
 
   ChatListScreen({super.key});

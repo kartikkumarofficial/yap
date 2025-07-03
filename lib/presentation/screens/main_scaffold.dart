@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import 'package:yap/presentation/screens/profile/profile_screen.dart';
 import 'package:yap/presentation/screens/home/home_screen.dart';
 import 'package:yap/presentation/screens/chat/chat_list_screen.dart';
 import 'package:yap/presentation/widgets/bottom_navigation_bar.dart';
-
 import '../../app/controllers/nav_controller.dart';
 
 class MainScaffold extends StatelessWidget {
