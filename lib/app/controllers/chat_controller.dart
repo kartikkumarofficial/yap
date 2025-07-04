@@ -5,8 +5,8 @@ class ChatController extends GetxController {
   final supabase = Supabase.instance.client;
 
   RxList<Map<String, dynamic>> messages = <Map<String, dynamic>>[].obs;
-
   RealtimeChannel? _messageChannel;
+
 
   // Fetch messages
   Future<void> fetchMessages(String chatId) async {

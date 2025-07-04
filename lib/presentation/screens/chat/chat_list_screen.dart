@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../app/controllers/chat_list_controller.dart';
+import '../new_chat_screen.dart';
 import 'chat_screen.dart';
 
 
@@ -47,6 +48,12 @@ class ChatListScreen extends StatelessWidget {
           },
         );
       }),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add),
+        onPressed: () {
+          Get.to(() => NewChatScreen());
+        },
+      ),
     );
   }
 }
