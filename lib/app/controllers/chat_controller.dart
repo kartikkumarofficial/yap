@@ -8,7 +8,7 @@ class ChatController extends GetxController {
   RealtimeChannel? _messageChannel;
 
 
-  // Fetch messages
+
   Future<void> fetchMessages(String chatId) async {
     try {
       final response = await supabase
@@ -22,7 +22,7 @@ class ChatController extends GetxController {
     }
   }
 
-  // Subscribe to real-time updates
+
   void subscribeToMessages(String chatId) {
     _messageChannel?.unsubscribe();
 
@@ -49,7 +49,7 @@ class ChatController extends GetxController {
     _messageChannel = null;
   }
 
-  // Send a message
+
   Future<void> sendMessage(String chatId, String content) async {
     final userId = supabase.auth.currentUser!.id;
     try {

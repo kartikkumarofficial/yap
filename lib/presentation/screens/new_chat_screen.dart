@@ -67,7 +67,6 @@ class _NewChatScreenState extends State<NewChatScreen> {
     });
 
     try {
-      // 1. Find the user by email
       final userResponse = await supabase
           .from('users')
           .select('id')
@@ -82,7 +81,6 @@ class _NewChatScreenState extends State<NewChatScreen> {
       final otherUserId = userResponse['id'];
       final currentUserId = supabase.auth.currentUser!.id;
 
-      // 2. Create the chat
       final chatResponse = await supabase
           .from('chats')
           .insert({
@@ -98,13 +96,11 @@ class _NewChatScreenState extends State<NewChatScreen> {
 
       final chatId = chatResponse['id'];
 
-      // 3. Add members
       await supabase.from('chat_members').insert([
         {'chat_id': chatId, 'user_id': currentUserId},
         {'chat_id': chatId, 'user_id': otherUserId},
       ]);
 
-      // 4. Refresh chat list
       final chatListController = Get.find<ChatListController>();
       await chatListController.fetchChats();
 
