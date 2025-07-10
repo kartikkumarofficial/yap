@@ -8,7 +8,7 @@ class ChatController extends GetxController {
   RealtimeChannel? _messageChannel;
 
 
-//
+
   Future<void> fetchMessages(String chatId) async {
     try {
       final response = await supabase
